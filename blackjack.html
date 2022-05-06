@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" href="css/sample.css">
+    <title>90's Blackjack</title>
+  </head>
+  <body>
+
+    <div id="content">
+      <!-- deal/stay/hit -->
+      <div id="nav">
+        <button id="deal">
+          Deal
+        </button>
+        <button id="hit">
+          Hit
+        </button>
+        <button id="stay">
+          Stay
+        </button>
+      </div>
+
+      <!-- dealer side -->
+      <div id="dealer">
+        <div class="whos_hand">
+          Dealer
+        </div>
+        <div class="cards">
+          <div class="hand">
+            <img id="dealer_hand1" src="img/playing_cards/back.png" alt="">
+          </div>
+          <div class="hand">
+            <img id="dealer_hand2" src="img/playing_cards/back.png" alt="">
+          </div>
+          <div class="hand">
+            <img src="img/playing_cards/back.png" alt="" id="dealer_hand3">
+          </div>
+          <div class="hand">
+            <img src="img/playing_cards/back.png" alt="" id="dealer_hand4">
+          </div>
+          <div class="hand">
+            <img src="img/playing_cards/back.png" alt="" id="dealer_hand5">
+          </div>
+        </div>
+      </div>
+
+      <!-- player side -->
+      <div id="player">
+        <div class="cards">
+          <div class="hand">
+            <img id="player_hand1" src="img/playing_cards/back.png" alt="">
+          </div>
+          <div class="hand">
+            <img id="player_hand2" src="img/playing_cards/back.png" alt="">
+          </div>
+          <div class="hand">
+            <img src="img/playing_cards/back.png" alt="" id="player_hand3">
+          </div>
+          <div class="hand">
+            <img src="img/playing_cards/back.png" alt="" id="player_hand4">
+          </div>
+          <div class="hand">
+            <img src="img/playing_cards/back.png" alt="" id="player_hand5">
+          </div>
+        </div>
+        <div class="whos_hand">
+          Player
+        </div>
+      </div>
+    </div>
+
+    <footer></footer>
+    <script>
+
+      // window.alert = function() {
+      //   debugger;
+      // }
+
+      let deck = [];
+      let bj = 21;
+      let player = [];
+      let player_sum = 0;
+      let dealer = [];
+      let dealer_sum = 0;
+      // image relative paths in array
+      let ace = ["img/playing_cards/ace/ace_of_clubs.png", 
+      "img/playing_cards/ace/ace_of_diamonds.png",
+      "img/playing_cards/ace/ace_of_hearts.png",
+      "img/playing_cards/ace/ace_of_spades.png"];
+      let two = ["img/playing_cards/two/2_of_clubs.png", 
+      "img/playing_cards/two/2_of_diamonds.png", 
+      "img/playing_cards/two/2_of_hearts.png", 
+      "img/playing_cards/two/2_of_spades.png"];
+      let three = ["img/playing_cards/three/3_of_clubs.png", 
+      "img/playing_cards/three/3_of_diamonds.png", 
+      "img/playing_cards/three/3_of_hearts.png", 
+      "img/playing_cards/three/3_of_spades.png"];
+      let four = ["img/playing_cards/four/4_of_clubs.png", 
+      "img/playing_cards/four/4_of_diamonds.png", 
+      "img/playing_cards/four/4_of_hearts.png", 
+      "img/playing_cards/four/4_of_spades.png"];
+      let five = ["img/playing_cards/five/5_of_clubs.png", 
+      "img/playing_cards/five/5_of_diamonds.png", 
+      "img/playing_cards/five/5_of_hearts.png", 
+      "img/playing_cards/five/5_of_spades.png"];
+      let six = ["img/playing_cards/six/6_of_clubs.png", 
+      "img/playing_cards/six/6_of_diamonds.png", 
+      "img/playing_cards/six/6_of_hearts.png", 
+      "img/playing_cards/six/6_of_spades.png"];
+      let seven = ["img/playing_cards/seven/7_of_clubs.png", 
+      "img/playing_cards/seven/7_of_diamonds.png", 
+      "img/playing_cards/seven/7_of_hearts.png", 
+      "img/playing_cards/seven/7_of_spades.png"];
+      let eight = ["img/playing_cards/eight/8_of_clubs.png", 
+      "img/playing_cards/eight/8_of_diamonds.png", 
+      "img/playing_cards/eight/8_of_hearts.png", 
+      "img/playing_cards/eight/8_of_spades.png"];
+      let nine = ["img/playing_cards/nine/9_of_clubs.png", 
+      "img/playing_cards/nine/9_of_diamonds.png", 
+      "img/playing_cards/nine/9_of_hearts.png", 
+      "img/playing_cards/nine/9_of_spades.png"];
+      let ten = ["img/playing_cards/ten/10_of_clubs.png", 
+      "img/playing_cards/ten/10_of_diamonds.png", 
+      "img/playing_cards/ten/10_of_hearts.png", 
+      "img/playing_cards/ten/10_of_spades.png"];
+      let jack = ["img/playing_cards/jack/jack_of_clubs.png", 
+      "img/playing_cards/jack/jack_of_diamonds.png", 
+      "img/playing_cards/jack/jack_of_hearts.png", 
+      "img/playing_cards/jack/jack_of_spades.png"];
+      let queen = ["img/playing_cards/queen/queen_of_clubs.png", 
+      "img/playing_cards/queen/queen_of_diamonds.png", 
+      "img/playing_cards/queen/queen_of_hearts.png", 
+      "img/playing_cards/queen/queen_of_spades.png"];
+      let king = ["img/playing_cards/king/king_of_clubs.png", 
+      "img/playing_cards/king/king_of_diamonds.png", 
+      "img/playing_cards/king/king_of_hearts.png", 
+      "img/playing_cards/king/king_of_spades.png"];
+      // array in array for iteration
+      let numtype = [ace, two, three, four, five, six, seven, 
+      eight, nine, ten, jack, queen, king];
+      
+      // global function for console log
+      function log() {
+        console.log(deck); // check for 48 cards
+        console.log(player, player_sum); // check hand and sum
+        console.log(dealer, dealer_sum); // check hand and sum
+      }
+
+      $("#deal").one("click", function() {
+        // create a full, 52 card deck 
+        for(let i = 1; i <= 13; i++) {
+          for(let j = 0; j < 4; j++) {
+            deck.push(i);
+          }
+        }
+      
+        // change royals to value 10 when adding to sum, NOT to array
+        function royals(x) {
+          if (deck[x] > 10) {
+            deck[x] = 10; // overwrite only needs a single =, not ==
+          }
+        }
+        // player adds card to hand
+        function player_add() {
+          let p_index = Math.floor(Math.random() * deck.length);
+          player.push(deck[p_index]);
+          royals(p_index);
+          player_sum += deck[p_index]; // update sum
+          deck.splice(p_index, 1);
+        }
+        // dealer adds card to hand
+        function dealer_add() {
+          let d_index = Math.floor(Math.random() * deck.length);
+          dealer.push(deck[d_index]);
+          royals(d_index);
+          dealer_sum += deck[d_index]; // update sum
+          deck.splice(d_index, 1);
+        }
+        
+        // deal first 2 cards
+        for(let i = 0; i < 2; i++) {
+          player_add();
+          dealer_add();
+        }
+        log();
+
+        // overwrite image src
+        function player_handreveal(x, y) { // x is player
+          for (let i = y; i < x.length; i++) {
+            let array = numtype[(x[i] - 1)];
+            let rand = Math.floor(Math.random() * array.length);
+            if (i == 0) {
+              document.querySelector("#player_hand1").src = array[rand];
+              array.splice(rand, 1);
+            }
+            else if (i == 1) {
+              document.querySelector("#player_hand2").src = array[rand];
+              array.splice(rand, 1);
+            }
+            else if (i == 2) {
+              document.querySelector("#player_hand3").src = array[rand];
+              document.querySelector("#player_hand3").style.opacity = "1";
+              array.splice(rand, 1);
+            }
+            else if (i == 3) {
+              document.querySelector("#player_hand4").src = array[rand];
+              document.querySelector("#player_hand4").style.opacity = "1";
+              array.splice(rand, 1);
+            }
+            else if (i == 4) {
+              document.querySelector("#player_hand5").src = array[rand];
+              document.querySelector("#player_hand5").style.opacity = "1";
+              array.splice(rand, 1);
+            }
+            console.log(array);
+          }
+
+        }
+        player_handreveal(player, 0);
+        // reveal dealer_hand1
+        function dealer_hand1reveal(x) {
+          let array = numtype[(x[0] - 1)];
+          let rand = Math.floor(Math.random() * array.length);
+          document.querySelector("#dealer_hand1").src = array[rand];
+          array.splice(rand, 1);
+          console.log(array);
+        }
+        dealer_hand1reveal(dealer);
+
+        // alert message executes before card flip - needed delay
+        setTimeout(function() {
+          if (player.includes(1) && player_sum == 11) {
+            alert("BLACKJACK! You WIN!");
+            window.location.reload();
+          }
+        }, 2000);
+
+        $("#hit").on("click", function() {
+          let counter = 1;
+          if (player_sum < 21) {
+            counter++;
+            player_add();
+            // reveal hand as the player decides to hit
+            player_handreveal(player, counter);
+          }
+          log();
+          setTimeout(function() {
+            if (player_sum == bj) {
+              alert("BLACKJACK! You WIN!");
+              window.location.reload();
+            }
+            else if (player_sum > bj) {
+              alert("BUST! You LOSE!");
+              window.location.reload();
+            }
+            else if (player.includes(1) && player_sum == 11) {
+              alert("BLACKJACK! You WIN!");
+              window.location.reload();
+            }
+          }, 2000);
+        });
+        // BUST alert shown twice after hit
+      
+        // stay button passes move to dealer
+        $("#stay").on("click", function() {
+
+          // adjust player sum if required
+          if (player.includes(1) && (player_sum <= 11)) {
+            player_sum += 10;
+          }
+
+          // reveal dealer_hand2
+          let array = numtype[(dealer[1] - 1)];
+          let rand = Math.floor(Math.random() * array.length);
+          document.querySelector("#dealer_hand2").src = array[rand];
+          array.splice(rand, 1);
+          console.log(array);
+
+          // if 1 in first two cards and if adding ten beats player hand
+          if (dealer.includes(1) && (dealer_sum <= 11) && (dealer_sum + 10 > player_sum)) {
+            dealer_sum += 10;
+          }
+          
+          function dealer_handreveal(x, y) {
+            for (let i = y; i < x.length; i++) {
+              let array = numtype[(x[i] - 1)];
+              let rand = Math.floor(Math.random() * array.length);
+              setTimeout(function(){
+                if (i == 0) {
+                document.querySelector("#dealer_hand1").src = array[rand];
+                array.splice(rand, 1);
+                }
+                else if (i == 1) {
+                  document.querySelector("#dealer_hand2").src = array[rand];
+                  array.splice(rand, 1);
+                }
+                else if (i == 2) {
+                  document.querySelector("#dealer_hand3").src = array[rand];
+                  document.querySelector("#dealer_hand3").style.opacity = "1";
+                  array.splice(rand, 1);
+                }
+                else if (i == 3) {
+                  document.querySelector("#dealer_hand4").src = array[rand];
+                  document.querySelector("#dealer_hand4").style.opacity = "1";
+                  array.splice(rand, 1);
+                }
+                else if (i == 4) {
+                  document.querySelector("#dealer_hand5").src = array[rand];
+                  document.querySelector("#dealer_hand5").style.opacity = "1";
+                  array.splice(rand, 1);
+                }
+              }, 1000);
+              console.log(array);
+            }
+          }
+
+          let count = 1;
+          // dealer logic
+          while ((dealer_sum < 17) || (dealer_sum <= player_sum)) { // basic rule
+            dealer_add();
+            count++;
+            setTimeout(function(){
+              dealer_handreveal(dealer, count);          
+            }, 1000);
+            if (dealer.includes(1) && dealer_sum + 10 > player_sum && dealer_sum <= 11) {
+              dealer_sum += 10;
+            }
+            log();
+          }
+
+          setTimeout(function() {
+            if (dealer_sum > 21) {
+              alert("Dealer is BUST! You WIN!");
+              window.stop();
+              window.location.reload();
+            }
+            else if (dealer_sum <= 21 && dealer_sum > player_sum) {
+              alert("Dealer WINS! You LOSE!");
+              window.stop();
+              window.location.reload();
+            }
+          }, 4000);
+        })
+      })
+        
+    </script>
+  </body>
+</html>
+
+<!-- there are cases where the third photo does not show up, is it when it is a 9? -->
